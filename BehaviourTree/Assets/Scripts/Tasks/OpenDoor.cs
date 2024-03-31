@@ -9,8 +9,9 @@ public class OpenDoor : Task
     {
         door = someDoor;
     }
-    public override bool Run()
+    public override void Run()
     {
-        return door.Open();
+        succeeded = door.Open();
+        EventBus.TriggerEvent(TaskFinished);
     }
 }

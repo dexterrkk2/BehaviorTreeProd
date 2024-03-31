@@ -9,8 +9,9 @@ public class Wait : Task
     {
         timeToWait = time;
     }
-    public override bool Run()
+    public override void Run()
     {
-        return true;
+        succeeded = true;
+        EventBus.ScheduleTrigger(TaskFinished, timeToWait);
     }
 }

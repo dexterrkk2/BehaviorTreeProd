@@ -11,10 +11,16 @@ public class MoveKinematicToObject : Task
         Mmover = mover as Arriver;
         Mtarget = target;
     }
-    public override bool Run()
+    public override void Run()
     {
         Debug.Log("target: " + Mtarget);
+        Mmover.OnArrived += MoverArrived;
         Mmover.myTarget = Mtarget;
-        return true;
+    }
+    public void MoverArrived()
+    {
+        Mmover.OnArrived -= MoverArrived;
+        succeeded = true;
+        EventBus.TriggerEvent(TaskFinished);
     }
 }

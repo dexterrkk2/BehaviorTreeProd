@@ -9,9 +9,10 @@ public class BargeDoor : Task
     {
         door = someDoor;
     }
-    public override bool Run()
+    public override void Run()
     {
-        door.AddForce(-10f, 0, 0, ForceMode.VelocityChange);
-        return true;
+        door.AddForce(0, 0, -10f, ForceMode.VelocityChange);
+        succeeded = true;
+        EventBus.TriggerEvent(TaskFinished);
     }
 }

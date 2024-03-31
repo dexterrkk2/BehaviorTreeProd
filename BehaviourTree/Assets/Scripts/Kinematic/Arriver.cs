@@ -6,7 +6,8 @@ public class Arriver : Kinematic
 {
     Arrive myMoveType;
     Align myRotateType;
-
+    public delegate void Arrived();
+    public event Arrived OnArrived;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,16 +23,20 @@ public class Arriver : Kinematic
     // Update is called once per frame
     protected override void Update()
     {
-        steeringUpdate = new SteeringOutput();
-        if(myMoveType.target == null)
+        myMoveType.target = myTarget;
+
+        if (myTarget != null)
         {
-            myMoveType.target = myTarget;
-            myRotateType.target = myTarget;
+            if ((myTarget.transform.position - transform.position).magnitude < 1.5f)
+            {
+                OnArrived?.Invoke();
+            }
         }
-        else
+
+        if (myTarget != null)
         {
+            //steeringUpdate = new SteeringOutput();
             steeringUpdate = myMoveType.getSteering();
-            //steeringUpdate.angular = myRotateType.getSteering().angular;
         }
         base.Update();
     }

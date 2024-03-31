@@ -75,7 +75,7 @@ public class BruceBanner : MonoBehaviour
         taskList.Add(getTreasureBehindClosedDoor);
         Selector getTreasure = new Selector();
         getTreasure.children = taskList;
-        //Debug.Log("Return");
+        Debug.Log("Return");
         return getTreasure;
     }
 }

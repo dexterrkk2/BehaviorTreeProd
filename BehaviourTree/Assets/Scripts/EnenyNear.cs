@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnenyNear : Task
 {
-   public override bool Run()
+   public override void Run()
    {
         //return distanceToEnemy < 10;
-        return true;
+        succeeded = true;
    }
 }

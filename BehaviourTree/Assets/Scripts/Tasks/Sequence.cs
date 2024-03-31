@@ -5,15 +5,41 @@ using UnityEngine;
 public class Sequence : Task
 {
     public List<Task> children;
-    public override bool Run()
+    Task currentTask;
+    int currentTaskIndex = 0;
+    public override void Run()
     {
-        foreach(Task c in children)
+        //Debug.Log("sequence running child task #" + currentTaskIndex);
+        currentTask = children[currentTaskIndex];
+        EventBus.StartListening(currentTask.TaskFinished, OnChildTaskFinished);
+        currentTask.Run();
+    }
+
+    void OnChildTaskFinished()
+    {
+        //Debug.Log("running Sequence");
+        //Debug.Log("Behavior complete! Success = " + currentTask.succeeded);
+        if (currentTask.succeeded)
         {
-            if (!c.Run())
+            EventBus.StopListening(currentTask.TaskFinished, OnChildTaskFinished);
+            currentTaskIndex++;
+            if (currentTaskIndex < children.Count)
             {
-                return false;
+                this.Run();
+            }
+            else
+            {
+                // we've reached the end of our children and all have succeeded!
+                succeeded = true;
+                EventBus.TriggerEvent(TaskFinished);
             }
         }
-        return true;
+        else
+        {
+            // sequence needs all children to succeed
+            // a child task failed, so we're done
+            succeeded = false;
+            EventBus.TriggerEvent(TaskFinished);
+        }
     }
 }

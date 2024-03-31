@@ -9,9 +9,10 @@ public class IsFalse : Task
     {
         varToTest = someBool;
     }
-    public override bool Run()
+    public override void Run()
     {
-        return !varToTest;
+        succeeded = !varToTest;
+        EventBus.TriggerEvent(TaskFinished);
     }
 }
 public class IsTrue : Task
@@ -21,8 +22,9 @@ public class IsTrue : Task
     {
         varToTest = someBool;
     }
-    public override bool Run()
+    public override void Run()
     {
-        return varToTest;
+        succeeded = varToTest;
+        EventBus.TriggerEvent(TaskFinished);
     }
 }

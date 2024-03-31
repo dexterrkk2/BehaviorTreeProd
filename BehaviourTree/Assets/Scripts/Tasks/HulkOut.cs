@@ -9,11 +9,12 @@ public class HulkOut : Task
     {
         entity = someEntity;
     }
-    public override bool Run()
+    public override void Run()
     {
         Debug.Log("Hulked");
         entity.transform.localScale *= 2;
         entity.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-        return true;
+        succeeded = true;
+        EventBus.TriggerEvent(TaskFinished);
     }
 }
